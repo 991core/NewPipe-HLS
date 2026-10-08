@@ -1,0 +1,116 @@
+{
+  "release": "v0.29.1-hls.2",
+  "date": "2026-10-08",
+  "baseNewPipeVersion": "0.29.1",
+  "extractorVersion": "0.26.5",
+  "apk": {
+    "file": "NewPipe-HLS-v0.29.1-hls.2.apk",
+    "sha256": "a71fe36b4b1ad2182963233bd93e181dc75a272d212e988590337bf7726631fd",
+    "bytes": 39959983,
+    "package": "org.schabi.newpipe.debug.codexhlsworkaround",
+    "versionName": "0.29.1-hls.2",
+    "versionCode": 1016,
+    "certificateSha256": "9a0cdb7ff7c8b79d3b0bd04d69d57c1b482bdc8091257f6fe375beecf57cd3de",
+    "signatureV1Verified": true,
+    "signatureV2Verified": true,
+    "updateInstallSucceeded": true
+  },
+  "build": {
+    "assembleDebug": "PASS",
+    "runCheckstyle": "PASS",
+    "targetedTests": 25,
+    "failures": 0,
+    "errors": 0,
+    "githubManualWorkflowExecuted": false
+  },
+  "environment": {
+    "type": "dedicatedAndroidEmulator",
+    "androidVersion": 11,
+    "apiLevel": 30,
+    "physicalDeviceTested": false
+  },
+  "behavior": {
+    "playlistFirst": true,
+    "recommendationsAfterPlaylist": true,
+    "ordinaryAutoQueuePreferenceChanged": false,
+    "repeatModeRespected": true
+  },
+  "localPlaylist": {
+    "apkSha256": "a71fe36b4b1ad2182963233bd93e181dc75a272d212e988590337bf7726631fd",
+    "playlistSize": 3,
+    "selectedIndex": 1,
+    "automaticNextIndex": 2,
+    "firstRecommendationIndex": 3,
+    "firstRecommendationVideoId": "HzGOWq5UyjY",
+    "automaticTransitionReason": 0,
+    "ordinaryAutoQueuePreference": false,
+    "httpStatusesInDeduplicatedSnapshots": {
+      "200": 160
+    },
+    "playbackErrors": [],
+    "audioCaptures": [
+      {
+        "titleVerifiedBeforeAndAfter": "YouTube Developers Live: Embedded Web Player Customization",
+        "usableForPositiveAudioValidation": true,
+        "peak": 237,
+        "rms": 53.1321058419654
+      },
+      {
+        "titleVerifiedBeforeAndAfter": "How AI Agents Actually Work (Every Piece Explained & Built)",
+        "usableForPositiveAudioValidation": true,
+        "peak": 165,
+        "rms": 21.777514043476867
+      }
+    ]
+  },
+  "youtubePlaylist": {
+    "displayedPlaylistCount": 200,
+    "initialQueueSize": 100,
+    "selectedIndex": 1,
+    "automaticNextIndex": 2,
+    "selectedVideoId": "kPa7bsKwL-c",
+    "nextVideoId": "euCqAq6BRa4",
+    "transitionReason": 0,
+    "mediaSessionWindowSizeAfterTransition": 10,
+    "ordinaryAutoQueuePreference": false,
+    "runtimePageTwoTested": false,
+    "runtimeRemotePlaylistEndTested": false,
+    "httpStatusesInDeduplicatedSnapshots": {
+      "200": 120
+    },
+    "playbackErrors": [],
+    "audioCaptures": [
+      {
+        "titleVerifiedBeforeAndAfter": "Lady Gaga, Bruno Mars - Die With A Smile (Official Music Video)",
+        "usableForPositiveAudioValidation": true,
+        "peak": 331,
+        "rms": 84.22937642300167
+      },
+      {
+        "titleVerifiedBeforeAndAfter": "DJ Snake - Let Me Love You (Official Music Video) ft. Justin Bieber",
+        "usableForPositiveAudioValidation": true,
+        "peak": 276,
+        "rms": 67.7684587902272
+      }
+    ]
+  },
+  "scope": {
+    "httpCounters": "deduplicated saved observation windows, not all traffic",
+    "completeVideosPlayedInTheseTests": false,
+    "remoteSecondPageAndEnd": "not traversed in VM; source and queue unit tests checked",
+    "backgroundAudioQualified": false,
+    "permanent403FixProven": false,
+    "rawLogsAndAudioPublished": false,
+    "signingKeyPublished": false
+  },
+  "preservation": {
+    "officialApkSha256": "18447bfb1e06d113edc88df93f471827280de06f6f3d4dc42f56f28b9c1bab79",
+    "existingLocalPlaylistsAndEntriesUnchanged": true,
+    "remoteBookmarkIdentityContentsAndOrderPreserved": true,
+    "remoteBookmarkDisplayIndexRenumberedDuringFixtureUse": true,
+    "testPlaylistRemoved": true,
+    "initialPlaybackPreferencesRestored": true,
+    "androidMusicVolumeRestored": true,
+    "emulatorAudioLinksRestored": true
+  }
+}

@@ -188,7 +188,8 @@ public class LocalPlaylistFragment extends BaseLocalListFragment<List<PlaylistSt
                 if (selectedItem instanceof PlaylistStreamEntry entry) {
                     final StreamEntity item = entry.getStreamEntity();
                     NavigationHelper.openVideoDetailFragment(requireContext(), getFM(),
-                            item.getServiceId(), item.getUrl(), item.getTitle(), null, false);
+                            item.getServiceId(), item.getUrl(), item.getTitle(),
+                            getPlayQueueStartingAt(entry), false);
                 }
             }
 
@@ -854,7 +855,7 @@ public class LocalPlaylistFragment extends BaseLocalListFragment<List<PlaylistSt
 
     private PlayQueue getPlayQueue(final int index) {
         if (itemListAdapter == null) {
-            return new SinglePlayQueue(Collections.emptyList(), 0);
+            return new SinglePlayQueue(Collections.emptyList(), 0, true);
         }
 
         final List<LocalItem> infoItems = itemListAdapter.getItemsList();
@@ -864,7 +865,7 @@ public class LocalPlaylistFragment extends BaseLocalListFragment<List<PlaylistSt
                 streamInfoItems.add(((PlaylistStreamEntry) item).toStreamInfoItem());
             }
         }
-        return new SinglePlayQueue(streamInfoItems, index);
+        return new SinglePlayQueue(streamInfoItems, index, true);
     }
 
     /**
@@ -922,4 +923,3 @@ public class LocalPlaylistFragment extends BaseLocalListFragment<List<PlaylistSt
         this.tabsPagerAdapter = tabsPagerAdapter;
     }
 }
-

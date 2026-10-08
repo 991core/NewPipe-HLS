@@ -16,7 +16,7 @@ Télécharger l’APK et `SHA256SUMS` dans les
 L’application apparaît sous **NewPipe HLS** et s’installe à côté de NewPipe officiel.
 
 - Paquet : `org.schabi.newpipe.debug.codexhlsworkaround`.
-- Version de base : `0.29.1` ; publication HLS : `v0.29.1-hls.1`.
+- Version de base : `0.29.1` ; publication : `v0.29.1-hls.2` (code Android 1016).
 - Android minimum : 6.0 / API 23.
 - APK de test debuggable, signé avec une clé de test distincte de la clé officielle.
 - Compatible en mise à jour avec la variante précédente **NewTube HLS Test**,
@@ -25,6 +25,21 @@ L’application apparaît sous **NewPipe HLS** et s’installe à côté de NewP
 Ouvrir ou partager un lien YouTube vers **NewPipe HLS**, puis sélectionner
 **Video player**. Pour revenir à l’application officielle, ouvrir NewPipe ;
 on peut désinstaller uniquement NewPipe HLS en conservant NewPipe officiel.
+
+## Lecture depuis une playlist
+
+Un clic sur un titre d'une playlist YouTube ou d'une playlist locale transmet
+maintenant la playlist au lecteur, avec la position exacte du titre choisi.
+Les titres suivants sont ceux de cette playlist, dans leur ordre. Les pages
+suivantes d'une playlist YouTube continuent à être chargées si nécessaire.
+
+Une fois le dernier titre de la playlist atteint, les recommandations prennent
+le relais automatiquement, même si l'ajout automatique est désactivé pour les
+vidéos ouvertes individuellement. Elles sont ajoutées après les titres de la
+playlist ; les modes de répétition et le mélange restent disponibles.
+Le réglage de lancement automatique de la lecture reste celui choisi dans les
+paramètres. La section des suggestions YouTube reste consultable ; la file du
+lecteur affiche la playlist réellement en cours.
 
 ## Changement de lecture
 
@@ -54,10 +69,10 @@ Le témoin officiel passait aussi pendant cette comparaison : l’élimination
 causale et durable du refus intermittent n’est donc pas démontrée.
 Aucun téléphone physique n’a été testé par le mainteneur pendant cette qualification.
 
-La publication conserve le même code de lecture. Ses changements supplémentaires
-portent sur le nom de l’application/projet, la stabilité du paquet et la
-configuration de signature pour permettre la compilation hors du poste de test.
-La qualification propre à l’APK publié est consignée dans
+Le code HLS est conservé dans `hls.2`, qui ajoute le maintien du contexte de
+playlist. Sa qualification est consignée dans
+[docs/PLAYLIST-VALIDATION.md](docs/PLAYLIST-VALIDATION.md).
+La qualification de la publication précédente reste disponible dans
 [docs/VALIDATION.md](docs/VALIDATION.md).
 
 ## Compiler
@@ -69,7 +84,9 @@ licences SDK acceptées par le constructeur, `ANDROID_HOME` configuré.
 git clone https://github.com/991core/NewPipe-HLS.git
 cd NewPipe-HLS
 ./gradlew :app:assembleDebug :app:runCheckstyle :app:testDebugUnitTest \
-  --tests org.schabi.newpipe.util.YoutubeHlsHelperTest --no-daemon
+  --tests org.schabi.newpipe.util.YoutubeHlsHelperTest \
+  --tests org.schabi.newpipe.player.playqueue.PlaylistContinuationTest \
+  --tests 'org.schabi.newpipe.player.playqueue.PlayQueueTest*' --no-daemon
 ```
 
 Sortie : `app/build/outputs/apk/debug/app-debug.apk`.

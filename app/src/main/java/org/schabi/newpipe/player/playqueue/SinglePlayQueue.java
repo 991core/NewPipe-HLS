@@ -28,6 +28,11 @@ public final class SinglePlayQueue extends PlayQueue {
         super(index, playQueueItemsOf(items));
     }
 
+    public SinglePlayQueue(@NonNull final List<StreamInfoItem> items, final int index,
+                           final boolean fromPlaylist) {
+        super(index, playQueueItemsOf(items), fromPlaylist);
+    }
+
     private static List<PlayQueueItem> playQueueItemsOf(@NonNull final List<StreamInfoItem> items) {
         return items.stream().map(PlayQueueItem::new).collect(Collectors.toList());
     }

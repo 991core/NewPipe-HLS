@@ -462,7 +462,9 @@ public final class Player implements PlaybackListener, Listener {
         }
 
         // branching parameters for below
-        final boolean samePlayQueue = playQueue != null && playQueue.equalStreamsAndIndex(newQueue);
+        final boolean samePlayQueue = playQueue != null
+                && playQueue.hasSamePlaybackContext(newQueue)
+                && playQueue.equalStreamsAndIndex(newQueue);
 
         /*
          * TODO As seen in #7427 this does not work:
@@ -477,6 +479,7 @@ public final class Player implements PlaybackListener, Listener {
         if (!exoPlayerIsNull()
                 && newQueue.size() == 1 && newQueue.getItem() != null
                 && playQueue != null && playQueue.size() == 1 && playQueue.getItem() != null
+                && playQueue.hasSamePlaybackContext(newQueue)
                 && newQueue.getItem().isSameItem(playQueue.getItem())
                 && newQueue.getItem().getRecoveryPosition() != PlayQueueItem.RECOVERY_UNSET) {
             // Player can have state = IDLE when playback is stopped or failed
@@ -504,7 +507,7 @@ public final class Player implements PlaybackListener, Listener {
         } else if (intent.getBooleanExtra(RESUME_PLAYBACK, false)
                 && DependentPreferenceHelper.getResumePlaybackEnabled(context)
                 // !samePlayQueue
-                && (playQueue == null || !playQueue.equalStreamsAndIndex(newQueue))
+                && !samePlayQueue
                 && !newQueue.isEmpty()
                 && newQueue.getItem() != null
                 && newQueue.getItem().getRecoveryPosition() == PlayQueueItem.RECOVERY_UNSET) {
@@ -1969,9 +1972,10 @@ public final class Player implements PlaybackListener, Listener {
     //region Play queue, segments and streams
 
     private void maybeAutoQueueNextStream(@NonNull final StreamInfo info) {
-        if (playQueue == null || playQueue.getIndex() != playQueue.size() - 1
+        if (playQueue == null
+                || playQueue.getIndex() != playQueue.size() - 1
                 || getRepeatMode() != REPEAT_MODE_OFF
-                || !PlayerHelper.isAutoQueueEnabled(context)) {
+                || !playQueue.canAutoQueue(PlayerHelper.isAutoQueueEnabled(context))) {
             return;
         }
         // auto queue when starting playback on the last item when not repeating

@@ -149,6 +149,14 @@ public class PlaylistFragment extends BaseListInfoFragment<StreamInfoItem, Playl
     }
 
     @Override
+    protected void onStreamSelected(final StreamInfoItem selectedItem) {
+        onItemSelected(selectedItem);
+        NavigationHelper.openVideoDetailFragment(requireContext(), getFM(),
+                selectedItem.getServiceId(), selectedItem.getUrl(), selectedItem.getName(),
+                getPlayQueueStartingAt(selectedItem), false);
+    }
+
+    @Override
     protected void showInfoItemDialog(final StreamInfoItem item) {
         final Context context = getContext();
         try {
@@ -380,7 +388,7 @@ public class PlaylistFragment extends BaseListInfoFragment<StreamInfoItem, Playl
         return new PlaylistPlayQueue(
                 currentInfo.getServiceId(),
                 currentInfo.getUrl(),
-                currentInfo.getNextPage(),
+                currentNextPage,
                 infoItems,
                 index
         );

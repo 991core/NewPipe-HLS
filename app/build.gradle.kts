@@ -59,6 +59,7 @@ configure<ApplicationExtension> {
     buildTypes {
         debug {
             isDebuggable = true
+            versionNameSuffix = "-hls.2"
             // Keep the published test package stable across branches and local rebuilds.
             applicationIdSuffix = ".debug.codexhlsworkaround"
             resValue("string", "app_name", "NewPipe HLS")

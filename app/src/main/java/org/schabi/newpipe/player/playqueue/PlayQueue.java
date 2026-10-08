@@ -44,13 +44,20 @@ public abstract class PlayQueue implements Serializable {
 
     private List<PlayQueueItem> backup;
     private List<PlayQueueItem> streams;
+    private final boolean playlistQueue;
 
     private transient PublishSubject<PlayQueueEvent> eventBroadcast;
     private transient Flowable<PlayQueueEvent> broadcastReceiver;
     private transient boolean disposed = false;
 
     PlayQueue(final int index, final List<PlayQueueItem> startWith) {
+        this(index, startWith, false);
+    }
+
+    PlayQueue(final int index, final List<PlayQueueItem> startWith,
+              final boolean fromPlaylist) {
         streams = new ArrayList<>(startWith);
+        playlistQueue = fromPlaylist;
 
         if (streams.size() > index) {
             history.add(streams.get(index));
@@ -105,6 +112,32 @@ public abstract class PlayQueue implements Serializable {
      * Load partial queue in the background, does nothing if the queue is complete.
      */
     public abstract void fetch();
+
+    /**
+     * @return whether this queue was opened from a playlist
+     */
+    public boolean isPlaylist() {
+        return playlistQueue;
+    }
+
+    /**
+     * Recommendations follow a playlist only once all of its pages have been loaded.
+     * @param autoQueueEnabled the user's setting for ordinary video queues
+     * @return whether recommendations may extend the end of this queue
+     */
+    public boolean canAutoQueue(final boolean autoQueueEnabled) {
+        return isPlaylist() ? isComplete() : autoQueueEnabled;
+    }
+
+    /**
+     * Keep a playlist's continuation policy when replacing an otherwise identical queue.
+     * @param other queue proposed to replace this one
+     * @return whether both queues have the same source and continuation policy
+     */
+    public boolean hasSamePlaybackContext(@Nullable final PlayQueue other) {
+        return other != null && getClass() == other.getClass()
+                && isPlaylist() == other.isPlaylist();
+    }
 
     /*//////////////////////////////////////////////////////////////////////////
     // Readonly ops
@@ -572,4 +605,3 @@ public abstract class PlayQueue implements Serializable {
         }
     }
 }
-
