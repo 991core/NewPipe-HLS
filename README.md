@@ -1,149 +1,100 @@
-<p align="center"><a href="https://newpipe.net"><img src="assets/new_pipe_icon_5.png" width="150"></a></p> 
-<h2 align="center"><b>NewPipe</b></h2>
-<h4 align="center">A libre lightweight streaming front-end for Android.</h4>
+# NewPipe HLS
 
-<p align="center"><a href="https://f-droid.org/packages/org.schabi.newpipe/"><img src="https://fdroid.gitlab.io/artwork/badge/get-it-on-en.svg" alt="Get it on F-Droid" width=206/></a></p>
+Fork expérimental de [NewPipe](https://github.com/TeamNewPipe/NewPipe), basé sur
+**NewPipe 0.29.1** avec **NewPipeExtractor 0.26.5**. La lecture vidéo YouTube à
+la demande privilégie HLS lorsqu’un manifeste compatible est disponible.
 
-<p align="center">
-<a href="https://github.com/TeamNewPipe/NewPipe/releases" alt="GitHub NewPipe releases"><img src="https://img.shields.io/github/release/TeamNewPipe/NewPipe.svg" ></a>
-<a href="https://github.com/TeamNewPipe/NewPipe-nightly/releases" alt="GitHub NewPipe nightly releases"><img src="https://img.shields.io/github/release/TeamNewPipe/NewPipe-nightly.svg?labelColor=purple&label=dev%20nightly"></a>
-<a href="https://www.gnu.org/licenses/gpl-3.0" alt="License: GPLv3"><img src="https://img.shields.io/badge/License-GPL%20v3-blue.svg"></a>
-<a href="https://github.com/TeamNewPipe/NewPipe/actions" alt="Build Status"><img src="https://github.com/TeamNewPipe/NewPipe/actions/workflows/ci.yml/badge.svg?branch=dev&event=push"></a>
-<a href="https://hosted.weblate.org/engage/newpipe/" alt="Translation Status"><img src="https://hosted.weblate.org/widgets/newpipe/-/svg-badge.svg"></a>
-</p>
+Le projet est indépendant de TeamNewPipe. Le code amont, ses crédits et sa licence
+sont conservés. Cette variante est destinée à qualifier un contournement des
+refus HTTP 403 intermittents ; elle ne garantit pas leur disparition sur tous
+les appareils et réseaux.
 
-<p align="center">
-<a href="https://web.libera.chat/#newpipe" alt="IRC channel: #newpipe"><img src="https://img.shields.io/badge/IRC%20chat-%23newpipe-brightgreen.svg"></a>
-<a href="https://matrix.to/#/#newpipe:matrix.newpipe-ev.de" alt="Matrix channel: #newpipe"><img src="https://img.shields.io/badge/Matrix%20chat-%23newpipe-blue"></a>
-</p>
+## Installer
 
-<hr>
-<p align="center"><a href="#screenshots">Screenshots</a> &bull; <a href="#supported-services">Supported Services</a> &bull; <a href="#description">Description</a> &bull; <a href="#features">Features</a> &bull; <a href="#installation-and-updates">Installation and updates</a> &bull; <a href="#contribution">Contribution</a> &bull; <a href="#donate">Donate</a> &bull; <a href="#license">License</a></p>
-<p align="center"><a href="https://newpipe.net">Website</a> &bull; <a href="https://newpipe.net/blog/">Blog</a> &bull; <a href="https://newpipe.net/FAQ/">FAQ</a> &bull; <a href="https://newpipe.net/press/">Press</a></p>
-<hr>
+Télécharger l’APK et `SHA256SUMS` dans les
+[Releases](https://github.com/991core/NewPipe-HLS/releases).
+L’application apparaît sous **NewPipe HLS** et s’installe à côté de NewPipe officiel.
 
-*Read this document in other languages: [Deutsch](doc/README.de.md), [English](README.md), [Español](doc/README.es.md), [Français](doc/README.fr.md), [हिन्दी](doc/README.hi.md), [Italiano](doc/README.it.md), [한국어](doc/README.ko.md), [Português Brasil](doc/README.pt_BR.md), [Polski](doc/README.pl.md), [ਪੰਜਾਬੀ ](doc/README.pa.md), [日本語](doc/README.ja.md), [Română](doc/README.ro.md), [Soomaali](doc/README.so.md), [Türkçe](doc/README.tr.md), [正體中文](doc/README.zh_TW.md), [অসমীয়া](doc/README.asm.md), [Српски](doc/README.sr.md), [العربية](README.ar.md)* 
+- Paquet : `org.schabi.newpipe.debug.codexhlsworkaround`.
+- Version de base : `0.29.1` ; publication HLS : `v0.29.1-hls.1`.
+- Android minimum : 6.0 / API 23.
+- APK de test debuggable, signé avec une clé de test distincte de la clé officielle.
+- Compatible en mise à jour avec la variante précédente **NewTube HLS Test**,
+  car son paquet et sa clé de signature sont conservés.
 
-> [!warning]
-> <b>THIS APP IS IN BETA, SO YOU MAY ENCOUNTER BUGS. IF YOU DO, OPEN AN ISSUE IN OUR GITHUB REPOSITORY BY FILLING OUT THE ISSUE TEMPLATE.</b>
-> 
-> <b>PUTTING NEWPIPE, OR ANY FORK OF IT, INTO THE GOOGLE PLAY STORE VIOLATES THEIR TERMS AND CONDITIONS.</b>
+Ouvrir ou partager un lien YouTube vers **NewPipe HLS**, puis sélectionner
+**Video player**. Pour revenir à l’application officielle, ouvrir NewPipe ;
+on peut désinstaller uniquement NewPipe HLS en conservant NewPipe officiel.
 
-## Screenshots
+## Changement de lecture
 
-[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/00.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/00.png)
-[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/01.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/01.png)
-[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/02.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/02.png)
-[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/03.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/03.png)
-[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/04.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/04.png)
-[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/05.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/05.png)
-[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/06.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/06.png)
-[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/07.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/07.png)
-[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/08.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/08.png)
-<br/><br/>
-[<img src="fastlane/metadata/android/en-US/images/tenInchScreenshots/09.png" width=405>](fastlane/metadata/android/en-US/images/tenInchScreenshots/09.png)
-[<img src="fastlane/metadata/android/en-US/images/tenInchScreenshots/10.png" width=405>](fastlane/metadata/android/en-US/images/tenInchScreenshots/10.png)
+`YoutubeHlsHelper` prépare le manifeste principal durant l’extraction asynchrone
+et expose les variantes AVC/H.264 + AAC comme qualités vidéo. Le resolver vidéo
+privilégie ces variantes et laisse ExoPlayer gérer les pistes HLS.
+Le parser sélectionne la qualité demandée tout en conservant ses groupes audio
+et sous-titres associés. Il évite ainsi de perdre l’audio externe au flux vidéo.
 
-### Supported Services
+Le client YouTube reste **VISIONOS** et l’extracteur reste inchangé. Aucun
+poToken fixe, service de jetons, proxy ou mécanisme de retry/bascule sur erreur
+n’a été ajouté. Une erreur HLS reste visible. En absence initiale d’URL HLS,
+le chemin existant est conservé ; un manifeste fourni mais invalide échoue.
 
-NewPipe currently supports these services:
+Les téléchargements conservent les formats directs. La lecture audio ordinaire
+en arrière-plan conserve également les formats directs ; le contournement HLS
+ne la qualifie pas. Les directs, contenus protégés et pistes multilingues n’ont
+pas été qualifiés. Les variantes AV1/HEVC/Opus sont exclues de ce contournement.
 
-<!-- We link to the service websites separately to avoid people accidentally opening a website they didn't want to. -->
-* YouTube ([website](https://www.youtube.com/)) and YouTube Music ([website](https://music.youtube.com/)) ([wiki](https://en.wikipedia.org/wiki/YouTube))
-* PeerTube ([website](https://joinpeertube.org/)) and all its instances (open the website to know what that means!) ([wiki](https://en.wikipedia.org/wiki/PeerTube))
-* Bandcamp ([website](https://bandcamp.com/)) ([wiki](https://en.wikipedia.org/wiki/Bandcamp))
-* SoundCloud ([website](https://soundcloud.com/)) ([wiki](https://en.wikipedia.org/wiki/SoundCloud))
-* media.ccc.de ([website](https://media.ccc.de/)) ([wiki](https://en.wikipedia.org/wiki/Chaos_Computer_Club))
+## Validation
 
-As you can see, NewPipe supports multiple video and audio services. Though it started off with YouTube, other people have added more services over the years, making NewPipe more and more versatile!
+La variante fonctionnelle précédente a été testée sur trois vidéos dans une VM
+Android 11 / API 30 : **504 réponses HTTP 200, aucun 403**, image, audio PCM,
+changement de qualité, pause/reprise, seek et extraction fraîche.
+La vidéo signalée a joué jusqu’à sa fin naturelle à 6 min 57 s.
+Le témoin officiel passait aussi pendant cette comparaison : l’élimination
+causale et durable du refus intermittent n’est donc pas démontrée.
+Aucun téléphone physique n’a été testé par le mainteneur pendant cette qualification.
 
-Partially due to circumstance, and partially due to its popularity, YouTube is the best supported out of these services. If you use or are familiar with any of these other services, please help us improve support for them! We're looking for maintainers for SoundCloud and PeerTube.
+La publication conserve le même code de lecture. Ses changements supplémentaires
+portent sur le nom de l’application/projet, la stabilité du paquet et la
+configuration de signature pour permettre la compilation hors du poste de test.
+La qualification propre à l’APK publié est consignée dans
+[docs/VALIDATION.md](docs/VALIDATION.md).
 
-If you intend to add a new service, please get in touch with us first! Our [docs](https://teamnewpipe.github.io/documentation/) provide more information on how a new service can be added to the app and to the [NewPipe Extractor](https://github.com/TeamNewPipe/NewPipeExtractor).
+## Compiler
 
-## Description
+Prérequis : JDK 21, Android SDK avec la plateforme 37.0 et Build Tools 36.0.0,
+licences SDK acceptées par le constructeur, `ANDROID_HOME` configuré.
 
-NewPipe works by fetching the required data from the official API (e.g. PeerTube) of the service you're using. If the official API is restricted (e.g. YouTube) for our purposes, or is proprietary, the app parses the website or uses an internal API instead. This means that you don't need an account on any service to use NewPipe.
-
-Also, since they are free and open source software, neither the app nor the Extractor use any proprietary libraries or frameworks, such as Google Play Services. This means you can use NewPipe on devices or custom ROMs that do not have Google apps installed.
-
-### Features
-
-* Watch videos at resolutions up to 4K
-* Listen to audio in the background, only loading the audio stream to save data
-* Popup mode (floating player, aka Picture-in-Picture)
-* Watch live streams
-* Show/hide subtitles/closed captions
-* Search videos and audios (on YouTube, you can specify the content language as well)
-* Enqueue videos (and optionally save them as local playlists)
-* Show/hide general information about videos (such as description and tags)
-* Show/hide next/related videos
-* Show/hide comments
-* Search videos, audios, channels, playlists and albums
-* Browse videos and audios within a channel
-* Subscribe to channels (yes, without logging into any account!)
-* Get notifications about new videos from channels you're subscribed to
-* Create and edit channel groups (for easier browsing and management)
-* Browse video feeds generated from your channel groups
-* View and search your watch history
-* Search and watch playlists (these are remote playlists, which means they're fetched from the service you're browsing)
-* Create and edit local playlists (these are created and saved within the app, and have nothing to do with any service)
-* Download videos/audios/subtitles (closed captions)
-* Open in Kodi
-* Watch/Block age-restricted material
-
-<!-- Hidden span to keep old links compatible. You should remove this span if you're translating the README into another language.-->
-<span id="updates"></span>
-
-## Installation and updates
-You can install NewPipe using one of the following methods:
- 1. Add our custom repo to F-Droid and install it from there. The instructions are here: https://newpipe.net/FAQ/tutorials/install-add-fdroid-repo/
- 2. Download the APK from [GitHub Releases](https://github.com/TeamNewPipe/NewPipe/releases), [compare the signing key](#apk-info) and install it.
- 3. Update via F-Droid. This is the slowest method of getting updates, as F-Droid must recognize changes, build the APK itself, sign it, and then push the update to users.
- 4. Build a debug APK yourself. This is the fastest way to get new features on your device, but is much more complicated, so we recommend using one of the other methods.
- 5. If you're interested in a specific feature or bugfix provided in a Pull Request in this repo, you can also download its APK from within the PR. Read the PR description for instructions. The great thing about PR-specific APKs is that they're installed side-by-side the official app, so you don't have to worry about losing your data or messing anything up.
-
-We recommend method 1 for most users. APKs installed using method 1 or 2 are compatible with each other (meaning that if you installed NewPipe using either method 1 or 2, you can also update NewPipe using the other), but not with those installed using method 3. This is due to the same signing key (ours) being used for 1 and 2, but a different signing key (F-Droid's) being used for 3. Building a debug APK using method 4 excludes a key entirely. Signing keys help ensure that a user isn't tricked into installing a malicious update to an app. When using method 5, each APK is signed with a different random key supplied by GitHub Actions, so you cannot even update it. You will have to backup and restore the app data each time you wish to use a new APK.
-
-In the meanwhile, if you want to switch sources for some reason (e.g. NewPipe's core functionality breaks and F-Droid doesn't have the latest update yet), we recommend following this procedure:
-1. Back up your data via Settings > Backup and Restore > Export Database so you keep your history, subscriptions, and playlists
-2. Uninstall NewPipe
-3. Download the APK from the new source and install it
-4. Import the data from step 1 via Settings > Backup and Restore > Import Database
-
-> [!Note]
-> When you're importing a database into the official app, always make sure that it is the one you exported _from_ the official app. If you import a database exported from an APK other than the official app, it may break things. Such an action is unsupported, and you should only do so when you're absolutely certain you know what you're doing.
-
-### APK Info
-
-This is the SHA fingerprint of NewPipe's signing key to verify downloaded APKs which are signed by us. The fingerprint is also available on [NewPipe's website](https://newpipe.net#download). This is relevant for method 2.
-```
-CB:84:06:9B:D6:81:16:BA:FA:E5:EE:4E:E5:B0:8A:56:7A:A6:D8:98:40:4E:7C:B1:2F:9E:75:6D:F5:CF:5C:AB
+```sh
+git clone https://github.com/991core/NewPipe-HLS.git
+cd NewPipe-HLS
+./gradlew :app:assembleDebug :app:runCheckstyle :app:testDebugUnitTest \
+  --tests org.schabi.newpipe.util.YoutubeHlsHelperTest --no-daemon
 ```
 
-## Contribution
-Whether you have ideas, translations, design changes, code cleaning, or even major code changes, help is always welcome. The app gets better and better with each contribution, no matter how big or small! If you'd like to get involved, check our [contribution notes](.github/CONTRIBUTING.md).
+Sortie : `app/build/outputs/apk/debug/app-debug.apk`.
+Sans configuration supplémentaire, Gradle utilise votre propre clé debug.
+La clé qui signe l’APK publié reste privée et n’est pas incluse dans le dépôt.
+Un APK signé avec une autre clé ne peut pas mettre à jour l’APK publié : exporter
+les données de la variante avant de changer de signature.
 
-<a href="https://hosted.weblate.org/engage/newpipe/">
-<img src="https://hosted.weblate.org/widgets/newpipe/-/287x66-grey.png" alt="Translation status" />
-</a>
+Pour un constructeur qui possède sa propre clé compatible avec la configuration
+debug, on peut fournir `-PhlsSigningKeystore=/chemin/vers/la-cle.jks`.
+Ne pas committer une clé de signature ni un fichier contenant ses secrets.
+Le workflow **HLS build checks** est déclenchable manuellement ; ses builds
+utilisent leur propre clé debug et ne sont pas les APK signés de la publication.
 
-## Donate
-If you like NewPipe, you're welcome to send a donation. We prefer Liberapay, as it is both open-source and non-profit. For further info on donating to NewPipe, please visit our [website](https://newpipe.net/donate).
+## Origine et licence
 
-<table>
-  <tr>
-    <td><a href="https://liberapay.com/TeamNewPipe/"><img src="https://upload.wikimedia.org/wikipedia/commons/2/27/Liberapay_logo_v2_white-on-yellow.svg" alt="Liberapay" width="80px" ></a></td>
-    <td><a href="https://liberapay.com/TeamNewPipe/"><img src="assets/liberapay_qr_code.png" alt="Visit NewPipe at liberapay.com" width="100px"></a></td>
-    <td><a href="https://liberapay.com/TeamNewPipe/donate"><img src="assets/liberapay_donate_button.svg" alt="Donate via Liberapay" height="35px"></a></td>
-  </tr>
-</table>
+Base amont : tag `v0.29.1`, commit
+`00acf2f318b0af7ffacbd687bba011b642cc01d0`.
+Extracteur : `v0.26.5`, inchangé.
+Les ajouts HLS et les tests ont été développés avec assistance LLM puis revus,
+compilés et vérifiés localement. Cette assistance ne constitue pas un audit
+indépendant ni une preuve de résolution permanente des refus YouTube.
 
-## Privacy Policy
-
-The NewPipe project aims to provide a private, anonymous experience for using web-based media services. Therefore, the app does not collect any data without your consent. NewPipe's privacy policy explains in detail what data is sent and stored when you send a crash report, or leave a comment in our blog. You can find the document [here](https://newpipe.net/legal/privacy/).
-
-## License
-[![GNU GPLv3 Image](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.en.html)  
-
-NewPipe is Free Software: You can use, study, share, and improve it at will. Specifically you can redistribute and/or modify it under the terms of the [GNU General Public License](https://www.gnu.org/licenses/gpl.html) as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+Licence du projet : **GPL-3.0-or-later** ; voir [LICENSE](LICENSE).
+Merci à TeamNewPipe, aux contributeurs de NewPipe et de NewPipeExtractor.
+Le [README amont](README.upstream.md) conserve les informations et crédits du
+projet d’origine ; ses badges, liens de téléchargement et politiques se rapportent
+à TeamNewPipe.

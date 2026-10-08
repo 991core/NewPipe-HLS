@@ -22,6 +22,7 @@ import org.schabi.newpipe.player.helper.PlayerHelper;
 import org.schabi.newpipe.player.mediaitem.MediaItemTag;
 import org.schabi.newpipe.player.mediaitem.StreamInfoTag;
 import org.schabi.newpipe.util.ListHelper;
+import org.schabi.newpipe.util.YoutubeHlsHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,11 +75,17 @@ public class VideoPlaybackResolver implements PlaybackResolver {
         final List<MediaSource> mediaSources = new ArrayList<>();
 
         // Create video stream source
+        final List<VideoStream> hlsStreams = info.getVideoStreams().stream()
+                .filter(YoutubeHlsHelper::isWorkaroundStream)
+                .collect(java.util.stream.Collectors.toList());
+        final boolean useHls = !hlsStreams.isEmpty();
         final List<VideoStream> videoStreamsList = ListHelper.getSortedStreamVideosList(context,
-                getPlayableStreams(info.getVideoStreams(), info.getServiceId()),
-                getPlayableStreams(info.getVideoOnlyStreams(), info.getServiceId()), false, true);
+                useHls ? hlsStreams : getPlayableStreams(
+                        info.getVideoStreams(), info.getServiceId()),
+                useHls ? List.of() : getPlayableStreams(
+                        info.getVideoOnlyStreams(), info.getServiceId()), false, true);
         final List<AudioStream> audioStreamsList =
-                getFilteredAudioStreams(context, info.getAudioStreams());
+                useHls ? List.of() : getFilteredAudioStreams(context, info.getAudioStreams());
 
         final int videoIndex;
         if (videoStreamsList.isEmpty()) {

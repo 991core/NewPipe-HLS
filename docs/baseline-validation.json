@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-07",
+  "scope": "Android 11 API30 emulator, three public videos; no physical phone test",
+  "baseApkSha256": "fc0afab1bb0849621be7ba0b4c21db202814694b9679bd66029fad38cbff4dd5",
+  "newHttp200": 504,
+  "newHttp403": 0,
+  "reportedVideoNaturalEnd": "06:57",
+  "videos": [
+    {
+      "id": "9HZ_tx8aWuA",
+      "naturalEnd": "06:57",
+      "qualities": [
+        "720p"
+      ]
+    },
+    {
+      "id": "aqz-KE-bpKQ",
+      "naturalPosition": "02:50",
+      "qualities": [
+        "720p60",
+        "480p"
+      ],
+      "pausedPosition": "04:23",
+      "seekTarget": "08:48",
+      "resumePosition": "08:53"
+    },
+    {
+      "id": "M7lc1UVf-VE",
+      "naturalPosition": "02:27",
+      "qualities": [
+        "720p",
+        "480p"
+      ],
+      "seekTarget": "20:36",
+      "resumePosition": "20:41",
+      "endedAfterSeek": "22:23"
+    }
+  ],
+  "freshReopenVerified": true,
+  "positiveAudioWindows": 8,
+  "audioWindowSeconds": 5,
+  "officialControlPosition": "02:34",
+  "officialControlHttp403": 0,
+  "limitations": [
+    "Official control and fresh native byte probes passed during this comparison; causal elimination of intermittent refusal unproven",
+    "Original official media cache preserved",
+    "Two captures affected by Android volume set to zero, one retained as invalid and one aborted before recording; positive HLS measurements subsequently obtained with exclusive private routing",
+    "No physical phone, livestream, protected-content, multilingual-audio or download/background-audio qualification"
+  ]
+}

@@ -59,15 +59,9 @@ configure<ApplicationExtension> {
     buildTypes {
         debug {
             isDebuggable = true
-
-            // suffix the app id and the app name with git branch name
-            if (normalizedWorkingBranch.isEmpty() || workingBranch in defaultBranches) {
-                applicationIdSuffix = ".debug"
-                resValue("string", "app_name", "NewPipe Debug")
-            } else {
-                applicationIdSuffix = ".debug.$normalizedWorkingBranch"
-                resValue("string", "app_name", "NewPipe $workingBranch")
-            }
+            // Keep the published test package stable across branches and local rebuilds.
+            applicationIdSuffix = ".debug.codexhlsworkaround"
+            resValue("string", "app_name", "NewPipe HLS")
         }
 
         release {
@@ -97,6 +91,11 @@ configure<ApplicationExtension> {
                 resValue("string", "app_name", "NewPipe $workingBranch")
             }
         }
+    }
+
+    // Without this optional property, Gradle uses the builder's own debug keystore.
+    providers.gradleProperty("hlsSigningKeystore").orNull?.let { path ->
+        signingConfigs.getByName("debug").storeFile = rootProject.file(path)
     }
 
     lint {

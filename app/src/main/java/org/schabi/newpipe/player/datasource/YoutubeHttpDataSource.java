@@ -46,6 +46,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.google.common.net.HttpHeaders;
 
+import org.schabi.newpipe.BuildConfig;
 import org.schabi.newpipe.DownloaderImpl;
 
 import java.io.IOException;
@@ -387,6 +388,22 @@ public final class YoutubeHttpDataSource extends BaseDataSource implements HttpD
             httpURLConnection = this.connection;
             responseCode = httpURLConnection.getResponseCode();
             responseMessage = httpURLConnection.getResponseMessage();
+            if (BuildConfig.DEBUG) {
+                final Uri uri = dataSpecParameter.uri;
+                final String client = uri.getQueryParameter("c");
+                final String itag = uri.getQueryParameter("itag");
+                android.util.Log.i("NewTubeHttp", "status=" + responseCode
+                        + " client=" + (client != null && client.matches("[A-Z0-9_]{1,24}")
+                            ? client : "other")
+                        + " itag=" + (itag != null && itag.matches("[0-9]{1,6}")
+                            ? itag : "unknown")
+                        + " position=" + dataSpecParameter.position
+                        + " length=" + dataSpecParameter.length
+                        + " nPresent=" + uri.getQueryParameterNames().contains("n")
+                        + " potPresent=" + uri.getQueryParameterNames().contains("pot")
+                        + " rangeQuery=" + rangeParameterEnabled
+                        + " rnQuery=" + rnParameterEnabled);
+            }
         } catch (final IOException e) {
             closeConnectionQuietly();
             throw HttpDataSourceException.createForIOException(e, dataSpec,
@@ -1009,4 +1026,3 @@ public final class YoutubeHttpDataSource extends BaseDataSource implements HttpD
         }
     }
 }
-

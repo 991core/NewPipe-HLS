@@ -1,0 +1,101 @@
+{
+  "date": "2026-10-08",
+  "release": "v0.29.1-hls.1",
+  "apk": "NewPipe-HLS-v0.29.1-hls.1.apk",
+  "apkSha256": "c29d168945f0ab670c3758babee0bec47de0fc1271d7e61444402981ed4209f1",
+  "package": "org.schabi.newpipe.debug.codexhlsworkaround",
+  "appLabel": "NewPipe HLS",
+  "baseNewPipeVersion": "0.29.1",
+  "extractorVersion": "0.26.5",
+  "environment": "Dedicated Android 11 / API30 emulator; no physical phone",
+  "checks": {
+    "assembleDebug": "PASS",
+    "runCheckstyle": "PASS",
+    "targetedJUnitTests": 3,
+    "junitFailures": 0,
+    "junitErrors": 0,
+    "apkSignatureVerified": true,
+    "signatureSchemes": [
+      "v1",
+      "v2"
+    ],
+    "functionalSourceMatchesPreviousQualifiedPatch": true
+  },
+  "videos": [
+    {
+      "case": "reported",
+      "id": "9HZ_tx8aWuA",
+      "observedNaturalPosition": "00:51",
+      "httpStatuses": {
+        "200": 36
+      },
+      "preparedHls": true,
+      "imageVerifiedLocally": true,
+      "positivePcmAudio": true,
+      "audioSeconds": 5,
+      "audioRmsInt16": 29.324,
+      "audioPeakInt16": 141
+    },
+    {
+      "case": "bunny",
+      "id": "aqz-KE-bpKQ",
+      "observedNaturalPosition": "00:53",
+      "httpStatuses": {
+        "200": 132
+      },
+      "preparedHls": true,
+      "imageVerifiedLocally": true,
+      "positivePcmAudio": true,
+      "audioSeconds": 5,
+      "audioRmsInt16": 11.719,
+      "audioPeakInt16": 118
+    },
+    {
+      "case": "developers",
+      "id": "M7lc1UVf-VE",
+      "observedNaturalPosition": "02:39",
+      "httpStatuses": {
+        "200": 80
+      },
+      "preparedHls": true,
+      "imageVerifiedLocally": true,
+      "positivePcmAudio": true,
+      "audioSeconds": 5,
+      "audioRmsInt16": 49.859,
+      "audioPeakInt16": 240
+    },
+    {
+      "case": "reopen",
+      "id": "9HZ_tx8aWuA",
+      "observedNaturalPosition": "00:48",
+      "httpStatuses": {
+        "200": 33
+      },
+      "preparedHls": true,
+      "imageVerifiedLocally": true,
+      "positivePcmAudio": true,
+      "audioSeconds": 5,
+      "audioRmsInt16": 27.407,
+      "audioPeakInt16": 141
+    }
+  ],
+  "http200": 281,
+  "http403": 0,
+  "playbackErrors": 0,
+  "positiveFiveSecondPcmWindows": 5,
+  "qualitySwitch": "720p60 to 480p",
+  "pauseResumeVerified": true,
+  "seekVerified": true,
+  "freshProcessAndExtractionVerified": true,
+  "positiveAudioAfterQualitySwitch": true,
+  "officialInstalledApkUnchanged": true,
+  "volumeAndEmulatorAudioLinksRestored": true,
+  "measurementNote": "One initial third-video audio measurement aborted before recording because the requested VM volume was not yet applied. A later exclusive measurement succeeded after stabilization; playback was not restarted.",
+  "limitations": [
+    "Debug test APK, independently signed; unofficial fork",
+    "Short requalification of the renamed APK; the prior longer 504-response qualification is recorded separately",
+    "Official app and fresh native probes also passed in the prior comparison: causality and permanent avoidance of intermittent HTTP403 unproven",
+    "No physical phone, livestream, protected-content, multilingual-audio, download or background-audio qualification",
+    "Manual GitHub workflow provided but not executed as part of this publication"
+  ]
+}

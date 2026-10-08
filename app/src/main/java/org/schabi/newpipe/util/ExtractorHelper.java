@@ -115,7 +115,8 @@ public final class ExtractorHelper {
                                                    final boolean forceLoad) {
         checkServiceId(serviceId);
         return checkCache(forceLoad, serviceId, url, InfoCache.Type.STREAM,
-                Single.fromCallable(() -> StreamInfo.getInfo(NewPipe.getService(serviceId), url)));
+                Single.fromCallable(() -> YoutubeHlsHelper.prepare(
+                        StreamInfo.getInfo(NewPipe.getService(serviceId), url))));
     }
 
     public static Single<ChannelInfo> getChannelInfo(final int serviceId, final String url,

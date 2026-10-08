@@ -39,6 +39,7 @@ import org.schabi.newpipe.player.helper.PlayerDataSource;
 import org.schabi.newpipe.player.mediaitem.MediaItemTag;
 import org.schabi.newpipe.player.mediaitem.StreamInfoTag;
 import org.schabi.newpipe.util.StreamTypeUtil;
+import org.schabi.newpipe.util.YoutubeHlsHelper;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -495,7 +496,16 @@ public interface PlaybackResolver extends Resolver<StreamInfo, MediaSource> {
                             "Error when generating the DASH manifest of YouTube OTF stream", e);
                 }
             case HLS:
-                return dataSource.getYoutubeHlsMediaSourceFactory().createMediaSource(
+                final HlsMediaSource.Factory hlsFactory =
+                        dataSource.getYoutubeHlsMediaSourceFactory();
+                if (stream instanceof VideoStream
+                        && YoutubeHlsHelper.isWorkaroundStream((VideoStream) stream)) {
+                    hlsFactory.setPlaylistParserFactory(
+                            YoutubeHlsHelper.parserFactory((VideoStream) stream));
+                    Log.i("NewTubeHls", "selected quality="
+                            + ((VideoStream) stream).getResolution());
+                }
+                return hlsFactory.createMediaSource(
                         new MediaItem.Builder()
                                 .setTag(metadata)
                                 .setUri(Uri.parse(stream.getContent()))
