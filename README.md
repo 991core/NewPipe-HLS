@@ -16,7 +16,7 @@ Télécharger l’APK et `SHA256SUMS` dans les
 L’application apparaît sous **NewPipe HLS** et s’installe à côté de NewPipe officiel.
 
 - Paquet : `org.schabi.newpipe.debug.codexhlsworkaround`.
-- Version de base : `0.29.1` ; publication : `v0.29.1-hls.2` (code Android 1016).
+- Version de base : `0.29.1` ; publication : `v0.29.1-hls.3` (code Android 1017).
 - Android minimum : 6.0 / API 23.
 - APK de test debuggable, signé avec une clé de test distincte de la clé officielle.
 - Compatible en mise à jour avec la variante précédente **NewTube HLS Test**,
@@ -43,6 +43,17 @@ lecteur affiche la playlist réellement en cours.
 
 ## Changement de lecture
 
+Depuis `hls.3`, une rotation ou une notification de visibilité répétée ne
+recharge plus la source. Le lecteur vidéo conserve son flux HLS et sa piste
+vidéo sélectionnée pendant le verrouillage, afin d'éviter une interruption
+audio lors du réveil. La surface vidéo peut toujours être recréée par Android
+pendant une rotation. La lecture HLS continue de consommer des données vidéo
+et conserve du travail de décodage lorsque l'écran est éteint.
+
+Une ouverture directe en arrière-plan conserve aussi le service d'extraction
+jusqu'au transfert au lecteur, pour éviter un refus de démarrage de service
+Android après une extraction lente.
+
 `YoutubeHlsHelper` prépare le manifeste principal durant l’extraction asynchrone
 et expose les variantes AVC/H.264 + AAC comme qualités vidéo. Le resolver vidéo
 privilégie ces variantes et laisse ExoPlayer gérer les pistes HLS.
@@ -67,13 +78,21 @@ changement de qualité, pause/reprise, seek et extraction fraîche.
 La vidéo signalée a joué jusqu’à sa fin naturelle à 6 min 57 s.
 Le témoin officiel passait aussi pendant cette comparaison : l’élimination
 causale et durable du refus intermittent n’est donc pas démontrée.
-Aucun téléphone physique n’a été testé par le mainteneur pendant cette qualification.
+Aucun téléphone physique n’avait été testé pendant cette qualification initiale.
 
 Le code HLS est conservé dans `hls.2`, qui ajoute le maintien du contexte de
 playlist. Sa qualification est consignée dans
 [docs/PLAYLIST-VALIDATION.md](docs/PLAYLIST-VALIDATION.md).
 La qualification de la publication précédente reste disponible dans
 [docs/VALIDATION.md](docs/VALIDATION.md).
+
+`hls.3` a ensuite été comparé à `hls.2` sur une tablette physique Android 14,
+en Wi-Fi domestique et via un point d'accès mobile. Les coupures reproduites
+pendant les changements d'orientation et de visibilité sont corrigées dans
+les cycles mesurés. Aucun 403 n'a été reproduit sur le réseau mobile pendant
+ces essais : la disparition du refus intermittent reste **non démontrée**.
+Voir [docs/TABLET-VALIDATION.md](docs/TABLET-VALIDATION.md) pour les contrôles
+et les limites des mesures.
 
 ## Compiler
 
@@ -85,8 +104,10 @@ git clone https://github.com/991core/NewPipe-HLS.git
 cd NewPipe-HLS
 ./gradlew :app:assembleDebug :app:runCheckstyle :app:testDebugUnitTest \
   --tests org.schabi.newpipe.util.YoutubeHlsHelperTest \
+  --tests org.schabi.newpipe.player.PlaybackVisibilityTest \
   --tests org.schabi.newpipe.player.playqueue.PlaylistContinuationTest \
-  --tests 'org.schabi.newpipe.player.playqueue.PlayQueueTest*' --no-daemon
+  --tests 'org.schabi.newpipe.player.playqueue.PlayQueueTest*' \
+  -DversionCodeOverride=1017 --no-daemon
 ```
 
 Sortie : `app/build/outputs/apk/debug/app-debug.apk`.

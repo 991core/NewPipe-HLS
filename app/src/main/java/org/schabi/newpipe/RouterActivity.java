@@ -94,7 +94,6 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
@@ -922,7 +921,6 @@ public class RouterActivity extends AppCompatActivity {
 
         public static final String KEY_CHOICE = "key_choice";
         private static final int ID = 456;
-        private Disposable fetcher;
 
         public FetcherService() {
             super(FetcherService.class.getSimpleName());
@@ -971,16 +969,19 @@ public class RouterActivity extends AppCompatActivity {
             if (single != null) {
                 final UserAction finalUserAction = userAction;
                 final Consumer<Info> resultHandler = getResultHandler(choice);
-                fetcher = single
+                // onHandleIntent runs on the IntentService worker. Keep the foreground fetcher
+                // alive until the main-thread player handoff finishes; otherwise Android can
+                // reject that delayed foreground-service start after a slow extraction.
+                single
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(info -> {
-                            resultHandler.accept(info);
-                            if (fetcher != null) {
-                                fetcher.dispose();
-                            }
-                        }, throwable -> handleError(this, new ErrorInfo(throwable, finalUserAction,
+                        .doOnSuccess(resultHandler::accept)
+                        .doOnError(throwable -> handleError(this,
+                                new ErrorInfo(throwable, finalUserAction,
                                 choice.url + " opened with " + choice.playerChoice,
-                                choice.serviceId, choice.url)));
+                                choice.serviceId, choice.url)))
+                        .onErrorComplete()
+                        .ignoreElement()
+                        .blockingAwait();
             }
         }
 
@@ -1040,9 +1041,6 @@ public class RouterActivity extends AppCompatActivity {
         public void onDestroy() {
             super.onDestroy();
             ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE);
-            if (fetcher != null) {
-                fetcher.dispose();
-            }
         }
 
         private NotificationCompat.Builder createNotification() {

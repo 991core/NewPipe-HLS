@@ -125,6 +125,7 @@ import org.schabi.newpipe.util.ListHelper;
 import org.schabi.newpipe.util.NavigationHelper;
 import org.schabi.newpipe.util.SerializedCache;
 import org.schabi.newpipe.util.StreamTypeUtil;
+import org.schabi.newpipe.util.YoutubeHlsHelper;
 import org.schabi.newpipe.util.image.CoilHelper;
 
 import java.util.List;
@@ -1375,6 +1376,7 @@ public final class Player implements PlaybackListener, Listener {
                     Optional.ofNullable(currentMetadata)
                             .flatMap(MediaItemTag::getMaybeAudioTrack).orElse(null);
             currentMetadata = tag;
+            updateVideoAndSubtitleTracks();
 
             if (!currentMetadata.getErrors().isEmpty()) {
                 // new errors might have been added even if previousInfo == tag.getMaybeStreamInfo()
@@ -2019,7 +2021,9 @@ public final class Player implements PlaybackListener, Listener {
 
         if (isAudioOnly && videoResolver.getStreamSourceType().orElse(
                 SourceType.VIDEO_WITH_AUDIO_OR_AUDIO_ONLY)
-                == SourceType.VIDEO_WITH_AUDIO_OR_AUDIO_ONLY) {
+                == SourceType.VIDEO_WITH_AUDIO_OR_AUDIO_ONLY
+                && info.getVideoStreams().stream()
+                    .noneMatch(YoutubeHlsHelper::isWorkaroundStream)) {
             // If the current info has only video streams with audio and if the stream is played as
             // audio, we need to use the audio resolver, otherwise the video stream will be played
             // in background.
@@ -2202,6 +2206,9 @@ public final class Player implements PlaybackListener, Listener {
             return;
         }
 
+        final boolean videoModeChanged = isAudioOnly == videoAndSubtitlesEnabled;
+        final boolean currentHlsSource = getSelectedVideoStream()
+                .map(YoutubeHlsHelper::isWorkaroundStream).orElse(false);
         isAudioOnly = !videoAndSubtitlesEnabled;
 
         final var item = playQueue.getItem();
@@ -2217,15 +2224,17 @@ public final class Player implements PlaybackListener, Listener {
             final SourceType sourceType = videoResolver.getStreamSourceType()
                     .orElse(SourceType.VIDEO_WITH_AUDIO_OR_AUDIO_ONLY);
 
-            if (hasTimeline || !hasPendingRecovery) {
-                // making sure to save playback position before reloadPlayQueueManager()
-                setRecovery();
-            }
-
-            if (playQueueManagerReloadingNeeded(sourceType, info, getVideoRendererIndex())) {
+            if (playQueueManagerReloadingNeeded(videoModeChanged, currentHlsSource,
+                    sourceType, info, getVideoRendererIndex())) {
+                if (hasTimeline || !hasPendingRecovery) {
+                    setRecovery();
+                }
                 reloadPlayQueueManager();
             }
         }, () -> {
+            if (!videoModeChanged || currentHlsSource) {
+                return;
+            }
             /*
             The current metadata may be null sometimes (for e.g. when using an unstable connection
             in livestreams) so we will be not able to execute the block above
@@ -2240,18 +2249,31 @@ public final class Player implements PlaybackListener, Listener {
             reloadPlayQueueManager();
         });
 
-        // Disable or enable video and subtitles renderers depending of the
-        // videoAndSubtitlesEnabled value
-        trackSelector.setParameters(trackSelector.buildUponParameters()
-                .setTrackTypeDisabled(C.TRACK_TYPE_TEXT, !videoAndSubtitlesEnabled)
-                .setTrackTypeDisabled(C.TRACK_TYPE_VIDEO, !videoAndSubtitlesEnabled));
+        updateVideoAndSubtitleTracks();
+    }
+
+    private void updateVideoAndSubtitleTracks() {
+        // Re-enabling a disabled HLS video track can reset the shared audio timeline and buffer.
+        // Keep that track selected while the screen is hidden. HLS already fetches video segments
+        // in this mode, but retaining its renderer also costs decoding work in the background.
+        final boolean currentHlsSource = getSelectedVideoStream()
+                .map(YoutubeHlsHelper::isWorkaroundStream).orElse(false);
+        final var parameters = trackSelector.buildUponParameters()
+                .setTrackTypeDisabled(C.TRACK_TYPE_TEXT, isAudioOnly)
+                .setTrackTypeDisabled(C.TRACK_TYPE_VIDEO, isAudioOnly && !currentHlsSource)
+                .build();
+        if (!parameters.equals(trackSelector.getParameters())) {
+            trackSelector.setParameters(parameters);
+        }
     }
 
     /**
      * Return whether the play queue manager needs to be reloaded when switching player type.
      *
      * <p>
-     * The play queue manager needs to be reloaded if the video renderer index is not known and if
+     * Repeated visibility notifications and the active YouTube HLS source do not require a reload.
+     * For other sources, the play queue manager needs to be reloaded if the video renderer index
+     * is not known and if
      * the content is not an audio content, but also if none of the following cases is met:
      *
      * <ul>
@@ -2269,15 +2291,26 @@ public final class Player implements PlaybackListener, Listener {
      * </ul>
      * </p>
      *
+     * @param videoModeChanged   whether the video visibility actually changed
+     * @param currentHlsSource   whether the active source is a prepared YouTube HLS stream
      * @param sourceType         the {@link SourceType} of the stream
      * @param streamInfo         the {@link StreamInfo} of the stream
      * @param videoRendererIndex the video renderer index of the video source, if that's a video
      *                           source (or {@link #RENDERER_UNAVAILABLE})
      * @return whether the play queue manager needs to be reloaded
      */
-    private boolean playQueueManagerReloadingNeeded(final SourceType sourceType,
-                                                    @NonNull final StreamInfo streamInfo,
-                                                    final int videoRendererIndex) {
+    static boolean playQueueManagerReloadingNeeded(final boolean videoModeChanged,
+                                                   final boolean currentHlsSource,
+                                                   final SourceType sourceType,
+                                                   @NonNull final StreamInfo streamInfo,
+                                                   final int videoRendererIndex) {
+        // Activity recreation repeats the visibility notification. It must not rebuild a source.
+        // Retain the active HLS source when hiding video.
+        // HLS may still fetch video segments in the background (ExoPlayer issue #9282).
+        if (!videoModeChanged || currentHlsSource) {
+            return false;
+        }
+
         final StreamType streamType = streamInfo.getStreamType();
         final boolean isStreamTypeAudio = StreamTypeUtil.isAudio(streamType);
 

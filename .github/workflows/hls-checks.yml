@@ -21,8 +21,10 @@ jobs:
         run: >-
           ./gradlew :app:assembleDebug :app:runCheckstyle :app:testDebugUnitTest
           --tests org.schabi.newpipe.util.YoutubeHlsHelperTest
+          --tests org.schabi.newpipe.player.PlaybackVisibilityTest
           --tests org.schabi.newpipe.player.playqueue.PlaylistContinuationTest
-          --tests 'org.schabi.newpipe.player.playqueue.PlayQueueTest*' --no-daemon
+          --tests 'org.schabi.newpipe.player.playqueue.PlayQueueTest*'
+          -DversionCodeOverride=1017 --no-daemon
       - uses: actions/upload-artifact@v7
         with:
           name: NewPipe-HLS-debug

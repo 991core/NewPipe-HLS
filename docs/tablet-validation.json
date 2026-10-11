@@ -1,0 +1,52 @@
+{
+  "version": "0.29.1-hls.3",
+  "version_code": 1017,
+  "apk_sha256": "fe3ec7273227cdf97f4f01cda7fc5b4b8d164fea4877fcb66ad4f4a4f065aefa",
+  "dates": [
+    "2026-10-11",
+    "2026-10-12"
+  ],
+  "device": {
+    "model": "SM-X200",
+    "android": 14,
+    "api": 34
+  },
+  "networks": [
+    "initial home Wi-Fi",
+    "mobile hotspot reported as 5G; radio type not independently measured"
+  ],
+  "validation": {
+    "unit_tests": 32,
+    "unit_failures": 0,
+    "unit_errors": 0,
+    "checkstyle": "PASS",
+    "build": "PASS",
+    "signature_v1": true,
+    "signature_v2": true,
+    "baseline_home_rotation_silences_seconds": [
+      1.133354,
+      1.069104
+    ],
+    "baseline_home_screen_off_silence_seconds": 0.556688,
+    "corrected_candidate_mobile_control_silences_at_least_100ms": 0,
+    "final_home_music_control_silences_at_least_100ms": 0,
+    "final_apk_http200_cumulative_app_window": 209,
+    "final_apk_http403_cumulative_app_window": 0,
+    "mobile_cached_home_hls_output_mean_db": -11.6,
+    "routed_background_handoff": "PlayerService created before FetcherService destruction; direct audio playback verified"
+  },
+  "claims": {
+    "audio_visibility_continuity": "VERIFIED_IN_MEASURED_CYCLES",
+    "video_image_after_wake": "VERIFIED",
+    "video_rotation_black_frame_duration": "NOT_MEASURED",
+    "intermittent_4g_http403_fix": "NOT_DEMONSTRATED",
+    "long_term_background_battery_use": "NOT_MEASURED"
+  },
+  "router": {
+    "bounded_calls": 1,
+    "retries": 0,
+    "fallbacks": 0,
+    "public_code_context_only": true,
+    "independent_audit": false
+  }
+}
